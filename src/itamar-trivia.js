@@ -111,7 +111,3 @@ class ItamarTrivia extends HTMLElement {
 }
 
 customElements.define("itamar-trivia", ItamarTrivia);
-
-// TODO::ask someone to help with design?
-// TODO::tests
-// TODO::refactor
