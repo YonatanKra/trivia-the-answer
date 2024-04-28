@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @import "https://unpkg.com/@vonage/vivid@latest/styles/tokens/theme-light.css";
+            @import "https://unpkg.com/@vonage/vivid@latest/styles/core/all.css";
+            @import "https://unpkg.com/@vonage/vivid@latest/styles/fonts/spezia-variable.css";
+
+            body {
+                direction: rtl;
+                padding: 0 32px;
+                text-align: center;
+            }
+        </style>
+        <title>Trivia Game</title>
+        <meta charset="UTF-8">
+    </head>
+    <body class="vvd-root">
+        <template id="trivia-question-template">
+            <style>
+                #question-wrapper {
+                    position: relative;
+                    text-align: center;
+                    padding: 16px;
+                    min-height: 140px;
+                }
+                #result {
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                    background: white;
+                    top: 0;
+                    left: 0;
+                    display: none;
+                }
+                #result.active {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .column {
+                    flex-direction: column;
+                }
+                vwc-button {
+                    margin: 0 6px;
+                }
+                .rows-display vwc-button {
+                    padding-bottom: 6px;
+                }
+            </style>
+            <vwc-card>
+                <div slot="main" id="question-wrapper">
+                    <h2 id="question"></h2>
+                    <div id="answers"></div>
+                    <div id="result"></div>
+                </vwc-card>
+            </vwc-card>
+        </template>
+        
+        <vwc-header id="header-main" slot="app-content" elevation-shadow="">
+
+            <div class="header-content-wrapper">
+                <vwc-button target="_blank"
+                            href="https://www.osimhistoria.com/theanswer/"
+                            appearance="filled" 
+                            connotation="accent" 
+                            size="condensed" 
+                            label="לפודקאסט התשובה"></vwc-button>
+                <vwc-button target="_blank"
+                            href="https://www.facebook.com/theanswerpodcast/"
+                            appearance="filled" 
+                            connotation="accent" 
+                            size="condensed" 
+                            icon="facebook-color"
+                            label="לעמוד הפייסבוק"></vwc-button>
+            </div>
+
+
+                    <main slot="app-content" hx-history-elt="" class=""><main slot="app-content" hx-history-elt="">
+                        
+            
+            
+        
+                        <vwc-layout column-basis="block" class="main-layout">
+                            <article class="article">
+                                <h1>כמה את/ה בעל/ת תשובה?</h1>
+                                <p>
+                                    אפליקציה זו בוחנת את היכרותך עם ״התשובה״.
+                                    בתום השאלות נדע האם וכמה את/ה בעל/ת תשובה!
+                                    <br/>
+                                    <br/>
+                                    רוצה להוסיף שאלות בעצמך? בסיום יינתן ציון ״בעל התשובה״. אם הצטיינת, תינתן לך אפשרות להוסיף שאלות נוספות בעצמך!
+                                    <br/>
+                                    <br/>
+                                    <b>נ.ב.</b>
+                                    אם לא מצליחים בשאלה, אל דאגה, תמיד אפשר להקשיב לפרק המתאים :)
+                                </p>
+                                <itamar-trivia></itamar-trivia>
+                            </article>
+                        </vwc-layout>
+
+        </vwc-header>
+        
+        <script type="module" src="./itamar-trivia.js"></script>
+        <script type="module">
+            import 'https://unpkg.com/@vonage/vivid@latest/header';
+            import 'https://unpkg.com/@vonage/vivid@latest/elevation';
+        </script>
+    </body>
+</html>
