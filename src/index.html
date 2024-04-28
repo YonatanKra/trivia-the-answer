@@ -24,6 +24,9 @@
                     text-align: center;
                     padding: 16px;
                     min-height: 140px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
                 #result {
                     height: 100%;
@@ -43,10 +46,16 @@
                     flex-direction: column;
                 }
                 vwc-button {
-                    margin: 0 6px;
+                    margin: 6px;
+                    width: 100%;
                 }
                 .rows-display vwc-button {
                     padding-bottom: 6px;
+                }
+                #answers {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
             </style>
             <vwc-card>
@@ -59,48 +68,38 @@
         </template>
         
         <vwc-header id="header-main" slot="app-content" elevation-shadow="">
-
-            <div class="header-content-wrapper">
-                <vwc-button target="_blank"
-                            href="https://www.osimhistoria.com/theanswer/"
-                            appearance="filled" 
-                            connotation="accent" 
-                            size="condensed" 
-                            label="לפודקאסט התשובה"></vwc-button>
-                <vwc-button target="_blank"
-                            href="https://www.facebook.com/theanswerpodcast/"
-                            appearance="filled" 
-                            connotation="accent" 
-                            size="condensed" 
-                            icon="facebook-color"
-                            label="לעמוד הפייסבוק"></vwc-button>
-            </div>
-
-
-
-                    <main slot="app-content" hx-history-elt="" class=""><main slot="app-content" hx-history-elt="">
-                        
-            
-            
-        
-                        <vwc-layout column-basis="block" class="main-layout">
-                            <article class="article">
-                                <h1>כמה את/ה בעל/ת תשובה?</h1>
-                                <p>
-                                    אפליקציה זו בוחנת את היכרותך עם ״התשובה״.
-                                    בתום השאלות נדע האם וכמה את/ה בעל/ת תשובה!
-                                    <br/>
-                                    <br/>
-                                    רוצה להוסיף שאלות בעצמך? בסיום יינתן ציון ״בעל התשובה״. אם הצטיינת, תינתן לך אפשרות להוסיף שאלות נוספות בעצמך!
-                                    <br/>
-                                    <br/>
-                                    <b>נ.ב.</b>
-                                    אם לא מצליחים בשאלה, אל דאגה, תמיד אפשר להקשיב לפרק המתאים :)
-                                </p>
-                                <itamar-trivia></itamar-trivia>
-                            </article>
-                        </vwc-layout>
-
+            <vwc-button target="_blank"
+                        href="https://www.osimhistoria.com/theanswer/"
+                        appearance="filled" 
+                        connotation="accent" 
+                        size="condensed" 
+                        label="לפודקאסט התשובה"></vwc-button>
+            <vwc-button target="_blank"
+                        href="https://www.facebook.com/theanswerpodcast/"
+                        appearance="filled" 
+                        connotation="accent" 
+                        size="condensed" 
+                        icon="facebook-color"
+                        label="לעמוד הפייסבוק"></vwc-button>
+            <main slot="app-content" hx-history-elt="" class=""><main slot="app-content" hx-history-elt="">
+                <vwc-layout column-basis="block" class="main-layout">
+                    <article class="article">
+                        <h1>כמה את/ה בעל/ת תשובה?</h1>
+                        <p>
+                            אפליקציה זו בוחנת את היכרותך עם ״התשובה״.
+                            בתום השאלות נדע האם וכמה את/ה בעל/ת תשובה!
+                            <br/>
+                            <br/>
+                            רוצה להוסיף שאלות בעצמך? בסיום יינתן ציון ״בעל התשובה״. אם הצטיינת, תינתן לך אפשרות להוסיף שאלות נוספות בעצמך!
+                            <br/>
+                            <br/>
+                            <b>נ.ב.</b>
+                            אם לא מצליחים בשאלה, אל דאגה, תמיד אפשר להקשיב לפרק המתאים :)
+                        </p>
+                        <itamar-trivia></itamar-trivia>
+                    </article>
+                </vwc-layout>
+            </main>
         </vwc-header>
         
         <script type="module" src="./itamar-trivia.js"></script>
