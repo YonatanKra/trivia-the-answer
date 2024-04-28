@@ -19,7 +19,7 @@ const getQuestionResultTemplate = (result, refLink) => {
 const getFinalResult = (grade) => {
     return `
     <div class="column">
-        <h2>ידעת ${grade}% מ״התשובה״</h2>
+        <h2>הנך בעל/ת ${grade}% מ״התשובה״</h2>
         ${grade >= 80 ? `
         <vwc-divider role="separator" orientation="horizontal"></vwc-divider>
         <div>
