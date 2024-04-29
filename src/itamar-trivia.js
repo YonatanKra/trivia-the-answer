@@ -44,6 +44,23 @@ const getFinalResult = (grade) => {
     `;
 }
 
+const getInstructionsScreenTemplate = () => {
+    return `
+    <p>
+        אפליקציה זו בוחנת את היכרותך עם ״התשובה״.
+        בתום השאלות נדע האם וכמה את/ה בעל/ת תשובה!
+        <br/>
+        <br/>
+        רוצה להוסיף שאלות בעצמך? בסיום יינתן ציון ״בעל התשובה״. אם הצטיינת, תינתן לך אפשרות להוסיף שאלות נוספות בעצמך!
+        <br/>
+        <br/>
+        <b>נ.ב.</b>
+        אם לא מצליחים בשאלה, אל דאגה, תמיד אפשר להקשיב לפרק המתאים :)
+        <vwc-button id="start-button" appearance="filled" connotation="success" label="יאללה, נתחיל!"></vwc-button>
+    </p>
+    `;
+};
+
 const setCalculationAnimation = () => {
     return `
     <div class="calculation-animation">
@@ -65,6 +82,7 @@ class ItamarTrivia extends HTMLElement {
     #questions;
     #points = 0;
     #currentQuestion = 0;
+    #started = false;
 
     constructor() {
         super();
@@ -82,7 +100,8 @@ class ItamarTrivia extends HTMLElement {
         this.#showQuestion();
     }
 
-    restart = () => {
+    restart = (showSplash = false) => {
+        this.#started = !showSplash;
         this.#currentQuestion = 0;
         this.#points = 0;
         const tmpParent = this.parentNode;
@@ -90,7 +109,17 @@ class ItamarTrivia extends HTMLElement {
         tmpParent.appendChild(this);
     }
 
+    #showSplash() {
+        this.#resultElement.innerHTML = getInstructionsScreenTemplate();
+        this.#resultElement.classList.toggle('active', true);
+        this.#resultElement.querySelector('#start-button').addEventListener('click', () => this.restart(false));
+    }
+
     #showQuestion = () => {
+        if (!this.#started) {
+            this.#showSplash();
+            return;
+        }
         if (this.#currentQuestion >= this.#questions.length) {
             this.#showFinalResults();
             return;
@@ -106,7 +135,7 @@ class ItamarTrivia extends HTMLElement {
         this.#resultElement.innerHTML = setCalculationAnimation();
         setTimeout(() => {
             this.#resultElement.innerHTML = getFinalResult(Math.round(100 * this.#points / this.#questions.length));
-            this.#tryAgainButton?.addEventListener('click', this.restart);
+            this.#tryAgainButton?.addEventListener('click', () => this.restart(false));
         }, 1000);
     }
 
