@@ -46,18 +46,21 @@ const getFinalResult = (grade) => {
 
 const getInstructionsScreenTemplate = () => {
     return `
-    <p>
-        אפליקציה זו בוחנת את היכרותך עם ״התשובה״.
-        בתום השאלות נדע האם וכמה את/ה בעל/ת תשובה!
-        <br/>
-        <br/>
-        רוצה להוסיף שאלות בעצמך? בסיום יינתן ציון ״בעל התשובה״. אם הצטיינת, תינתן לך אפשרות להוסיף שאלות נוספות בעצמך!
-        <br/>
-        <br/>
-        <b>נ.ב.</b>
-        אם לא מצליחים בשאלה, אל דאגה, תמיד אפשר להקשיב לפרק המתאים :)
+    <div class="column">
+        <p>
+            אפליקציה זו בוחנת את היכרותך עם ״התשובה״.
+            בתום השאלות נדע האם וכמה את/ה בעל/ת תשובה!
+            <br/>
+            <br/>
+            רוצה להוסיף שאלות בעצמך? בסיום יינתן ציון ״בעל התשובה״. אם הצטיינת, תינתן לך אפשרות להוסיף שאלות נוספות בעצמך!
+            <br/>
+            <br/>
+            <b>נ.ב.</b>
+            אם לא מצליחים בשאלה, אל דאגה, תמיד אפשר להקשיב לפרק המתאים :)
+            
+        </p>
         <vwc-button id="start-button" appearance="filled" connotation="success" label="יאללה, נתחיל!"></vwc-button>
-    </p>
+    </div>
     `;
 };
 
@@ -84,6 +87,22 @@ class ItamarTrivia extends HTMLElement {
     #currentQuestion = 0;
     #started = false;
 
+    get #tryAgainButton() {
+        return this.shadowRoot.querySelector('#try-again');
+    }
+
+    get #answersElement() {
+        return this.shadowRoot.querySelector('#answers');
+    }
+
+    get #resultElement() {
+        return this.shadowRoot.querySelector("#result");
+    }
+
+    get #questionElement() {
+        return this.shadowRoot.querySelector("#question");
+    }
+    
     constructor() {
         super();
         const template = document.getElementById("trivia-question-template");
@@ -111,8 +130,8 @@ class ItamarTrivia extends HTMLElement {
 
     #showSplash() {
         this.#resultElement.innerHTML = getInstructionsScreenTemplate();
-        this.#resultElement.classList.toggle('active', true);
         this.#resultElement.querySelector('#start-button').addEventListener('click', () => this.restart(false));
+        this.#showResults(true);
     }
 
     #showQuestion = () => {
@@ -124,45 +143,36 @@ class ItamarTrivia extends HTMLElement {
             this.#showFinalResults();
             return;
         }
-        this.#resultElement.classList.remove('active');
+        this.#showResults(false);
         const question = this.#questions[this.#currentQuestion];
         this.shadowRoot.querySelector("#question").innerHTML = question.question;
         this.#showAnswers(question);
     }
 
     #showFinalResults = () => {
-        this.#resultElement.classList.add('active');
+        this.#showResults(true);
         this.#resultElement.innerHTML = setCalculationAnimation();
         setTimeout(() => {
-            this.#resultElement.innerHTML = getFinalResult(Math.round(100 * this.#points / this.#questions.length));
+            this.#resultElement.innerHTML = getFinalResult(Math.round(100 * this.#points / (this.#questions.length - 1)));
             this.#tryAgainButton?.addEventListener('click', () => this.restart(false));
         }, 1000);
     }
 
-    get #tryAgainButton() {
-        return this.shadowRoot.querySelector('#try-again');
-    }
-
     #showAnswers(question) {
-        const answersElement = this.shadowRoot.querySelector("#answers");
-        answersElement.innerHTML = "";
+        this.#answersElement.innerHTML = "";
         const shuffledAnswers = shuffleArray(question.answers);
         for (let i = 0; i < shuffledAnswers.length; i++) {
-            this.#setAnswerButton(answersElement, shuffledAnswers[i], question);
+            this.#setAnswerButton(shuffledAnswers[i], question);
         }
     }
 
-    get #resultElement() {
-        return this.shadowRoot.querySelector("#result");
-    }
-
-    #setAnswerButton(answersElement, answer, {sourceLink, correctAnswer}) {
+    #setAnswerButton(answer, {sourceLink, correctAnswer}) {
         const button = document.createElement("vwc-button");
         button.appearance = 'filled';
         button.connotation = 'cta';
         button.label = answer;
         button.onclick = () => {
-            this.#resultElement.classList.add('active');
+            this.#showResults(true);
             if (answer === this.#questions[this.#currentQuestion].answers[correctAnswer - 1]) {
                 this.#points++;
                 this.#resultElement.innerHTML = getQuestionResultTemplate('נכון!');
@@ -180,7 +190,13 @@ class ItamarTrivia extends HTMLElement {
             }
             
         };
-        answersElement.appendChild(button);
+        this.#answersElement.appendChild(button);
+    }
+
+    #showResults = (showResults) => {
+        this.#questionElement.classList.toggle('hidden', showResults);
+        this.#answersElement.classList.toggle('hidden', showResults);
+        this.#resultElement.classList.toggle('hidden', !showResults);
     }
 }
 
