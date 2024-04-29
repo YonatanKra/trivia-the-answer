@@ -41,19 +41,41 @@ function normalizeQuestion(question) {
         sourceLink
     ]
 }
-const cachedData = localStorage.getItem('sheetData');
+
+function isLocalStorageTimeValid() {
+    const now = new Date().getTime();
+    const savedTime = localStorage.getItem('sheetDataTime');
+    const timeDiff = now - savedTime;
+    return savedTime && timeDiff < 12 * 60 * 60 * 1000;
+}
+
+function getDataFromLocalStorage() {
+    if (isLocalStorageTimeValid()) {
+        return localStorage.getItem('sheetData');;
+    }
+    return null;
+}
+
+function setDataInLocalStorage(data) {
+    localStorage.setItem('sheetData', JSON.stringify(data));
+    localStorage.setItem('sheetDataTime', new Date().getTime());
+}
+
+function transformDataToQuestions(data) {
+    return data.filter((item, index) => index !== 0)
+        .map(question => new Question(...normalizeQuestion(question)));
+}
 
 export async function getQuestions() {
+    const cachedData = getDataFromLocalStorage();
     if (cachedData) {
-        const data = JSON.parse(cachedData);
-        return data;
+        const questions = JSON.parse(cachedData);
+        return questions;
     } else {
         try {
-            const questions = (await getSheetData(spreadsheetId, sheetName, apiKey))
-                .filter((item, index) => index !== 0)
-                .map(question => new Question(...normalizeQuestion(question)));
-            
-            localStorage.setItem('sheetData', JSON.stringify(questions));
+            const questions = transformDataToQuestions(await getSheetData(spreadsheetId, sheetName, apiKey));
+                
+            setDataInLocalStorage(questions);
             return questions;
         } catch(e) {
             console.error(e);
