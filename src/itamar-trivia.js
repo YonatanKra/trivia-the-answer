@@ -36,6 +36,14 @@ const getFinalResult = (grade) => {
     `;
 }
 
+const setCalculationAnimation = () => {
+    return `
+    <div class="calculation-animation">
+        <img src="./assets/rolling-drums.gif" alt="rolling-drums while calculating the results"/>
+    </div>
+    `;
+};
+
 function shuffleArray(shuffledArray) {
     const array = JSON.parse(JSON.stringify(shuffledArray));
     for (let i = array.length - 1; i > 0; i--) {
@@ -63,16 +71,28 @@ class ItamarTrivia extends HTMLElement {
 
     async connectedCallback() {
         await this.#getQuestions();
+        this.#currentQuestion = this.#questions.length - 1;
         this.#showQuestion();
     }
 
     #showQuestion = () => {
+        if (this.#currentQuestion >= this.#questions.length) {
+            this.#showFinalResults();
+            return;
+        }
         this.#resultElement.classList.remove('active');
         const question = this.#questions[this.#currentQuestion];
         this.shadowRoot.querySelector("#question").innerHTML = question.question;
         this.#showAnswers(question);
     }
 
+    #showFinalResults() {
+        this.#resultElement.classList.add('active');
+        this.#resultElement.innerHTML = setCalculationAnimation();
+        setTimeout(() => {
+            this.#resultElement.innerHTML = getFinalResult(Math.round(100 * this.#points / this.#questions.length));
+        }, 1000);
+    }
     #showAnswers(question) {
         const answersElement = this.shadowRoot.querySelector("#answers");
         answersElement.innerHTML = "";
@@ -100,14 +120,14 @@ class ItamarTrivia extends HTMLElement {
                 this.#resultElement.innerHTML = getQuestionResultTemplate('טעות!', sourceLink);
             }
             this.#currentQuestion++;
-            if (this.#currentQuestion < this.#questions.length) {
-                this.shadowRoot.querySelector('#next-question-button').addEventListener('click', this.#showQuestion);
-            } else {
-                this.#resultElement.innerHTML = getFinalResult(100 * this.#points / this.#questions.length);
-            }
+            
+            this.shadowRoot.querySelector('#next-question-button').addEventListener('click', this.#showQuestion);
+            
         };
         answersElement.appendChild(button);
     }
 }
 
 customElements.define("itamar-trivia", ItamarTrivia);
+
+// TODO::differentiate between the last "next" button click and the "next" button click in regular question
