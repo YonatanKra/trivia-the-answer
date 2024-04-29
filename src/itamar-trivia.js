@@ -22,17 +22,25 @@ const getFinalResult = (grade) => {
         <h2>הנך בעל/ת ${grade}% מ״התשובה״</h2>
         ${grade >= 80 ? `
         <vwc-divider role="separator" orientation="horizontal"></vwc-divider>
-        <div>
-            בתור בעל/ת תשובה, יש לך את הזכות ללמד עוד אנשים!
-        </div>
+            <div>
+                בתור בעל/ת תשובה, יש לך את הזכות ללמד עוד אנשים!
+            </div>
 
-        <div>
-            <a target="_blank"
-            href="https://forms.gle/mWWNMJoCCwByPNN6A">
-                <vwc-icon name="edit-line"></vwc-icon> רוצה להוסיף שאלות?</a>
-        </div>
+            <vwc-button connotation="cta" 
+                        target="_blank" 
+                        icon="edit-line" 
+                        label="רוצה להוסיף שאלות בעצמך?"
+                        href="https://forms.gle/mWWNMJoCCwByPNN6A">
+            </vwc-button>
+
+        ` : ``}
+        <vwc-button id="try-again" 
+                    size="${grade >= 80 ? 'super-condensed' : 'normal'}" 
+                    appearance="${grade >= 80 ? 'ghost' : 'filled'}" 
+                    label="${grade >= 80 ? 'היה כיף! רוצה עוד פעם!' : 'רוצה לנסות שוב?'}">
+        </vwc-button>
     </div>
-    ` : ''}
+        
     `;
 }
 
@@ -71,8 +79,15 @@ class ItamarTrivia extends HTMLElement {
 
     async connectedCallback() {
         await this.#getQuestions();
-        this.#currentQuestion = this.#questions.length - 1;
         this.#showQuestion();
+    }
+
+    restart = () => {
+        this.#currentQuestion = 0;
+        this.#points = 0;
+        const tmpParent = this.parentNode;
+        this.remove();
+        tmpParent.appendChild(this);
     }
 
     #showQuestion = () => {
@@ -86,13 +101,19 @@ class ItamarTrivia extends HTMLElement {
         this.#showAnswers(question);
     }
 
-    #showFinalResults() {
+    #showFinalResults = () => {
         this.#resultElement.classList.add('active');
         this.#resultElement.innerHTML = setCalculationAnimation();
         setTimeout(() => {
             this.#resultElement.innerHTML = getFinalResult(Math.round(100 * this.#points / this.#questions.length));
+            this.#tryAgainButton?.addEventListener('click', this.restart);
         }, 1000);
     }
+
+    get #tryAgainButton() {
+        return this.shadowRoot.querySelector('#try-again');
+    }
+
     #showAnswers(question) {
         const answersElement = this.shadowRoot.querySelector("#answers");
         answersElement.innerHTML = "";
@@ -121,7 +142,13 @@ class ItamarTrivia extends HTMLElement {
             }
             this.#currentQuestion++;
             
-            this.shadowRoot.querySelector('#next-question-button').addEventListener('click', this.#showQuestion);
+            const nextButton = this.shadowRoot.querySelector('#next-question-button');
+            if (this.#currentQuestion < this.#questions.length - 1) {
+                nextButton.addEventListener('click', this.#showQuestion);
+            } else {
+                nextButton.label = 'לסיכום...';
+                nextButton.addEventListener('click', this.#showFinalResults);
+            }
             
         };
         answersElement.appendChild(button);
@@ -129,5 +156,3 @@ class ItamarTrivia extends HTMLElement {
 }
 
 customElements.define("itamar-trivia", ItamarTrivia);
-
-// TODO::differentiate between the last "next" button click and the "next" button click in regular question
