@@ -1,6 +1,5 @@
 async function getSheetData(spreadsheetId, sheetName, apiKey) {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
-    console.log(url);
 
     try {
         const response = await fetch(url);
