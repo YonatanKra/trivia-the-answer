@@ -4,7 +4,7 @@
   "description": "A Trivia App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/YonatanKra/trivia-the-answer/issues"
   },
-  "homepage": "https://github.com/YonatanKra/trivia-the-answer#readme"
+  "homepage": "https://github.com/YonatanKra/trivia-the-answer#readme",
+  "dependencies": {
+    "vitest": "^1.5.2"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
 }
