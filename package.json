@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/YonatanKra/trivia-the-answer#readme",
   "dependencies": {
+    "@vonage/vivid": "^3.57.0",
     "vitest": "^1.5.2"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^1.6.0",
     "jsdom": "^24.0.0"
   }
 }

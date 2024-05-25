@@ -4,12 +4,12 @@ async function getSheetData(spreadsheetId, sheetName, apiKey) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Error fetching spreadsheet data: ${response.statusText}`);
+            throw new Error(`${response.statusText}`);
         }
         const data = await response.json();
-        return data.values; // Array containing spreadsheet data
+        return data.values;
     } catch (error) {
-        console.error("Error fetching sheet data:", error);
+        console.error(`Failed to fetch spreadsheet. ${error}`);
         return null;
     }
 }

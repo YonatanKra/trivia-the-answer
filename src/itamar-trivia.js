@@ -1,7 +1,7 @@
-import 'https://unpkg.com/@vonage/vivid@latest/layout';
-import 'https://unpkg.com/@vonage/vivid@latest/card';
-import 'https://unpkg.com/@vonage/vivid@latest/button';
-import 'https://unpkg.com/@vonage/vivid@latest/divider';
+import '@vonage/vivid/layout';
+import '@vonage/vivid/card';
+import '@vonage/vivid/button';
+import '@vonage/vivid/divider';
 import { getQuestions } from './getQuestions.js';
 
 const getQuestionResultTemplate = (result, refLink) => {
@@ -84,7 +84,7 @@ function shuffleArray(shuffledArray) {
 class ItamarTrivia extends HTMLElement {
     #questions;
     #points = 0;
-    #currentQuestion = 0;
+    #currentQuestion = 9;
     #started = false;
 
     get #tryAgainButton() {
