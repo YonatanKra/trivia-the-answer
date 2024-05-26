@@ -28,4 +28,4 @@ jobs:
         - name: build
           env:
             GOOGLE_API_KEY: ${{ secrets.GOOGLE_DOCS_API_KEY }}
-          run: npm vite build
+          run: npm run build
