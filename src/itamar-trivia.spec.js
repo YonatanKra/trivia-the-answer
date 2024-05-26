@@ -8,7 +8,7 @@ describe('itamar-trivia', () => {
     });
 
     //TODO::test connected callback and move from there...
-    describe('connected element', () => {
-        
+    describe.skip('connected element', () => {
+
     });
 });
