@@ -1,23 +1,21 @@
 async function getSheetData(spreadsheetId, sheetName, apiKey) {
+
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
-    console.log(url);
 
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Error fetching spreadsheet data: ${response.statusText}`);
+            throw new Error(`${response.statusText}`);
         }
         const data = await response.json();
-        return data.values; // Array containing spreadsheet data
+        return data.values;
     } catch (error) {
-        console.error("Error fetching sheet data:", error);
+        console.error(`Failed to fetch spreadsheet. ${error}`);
         return null;
     }
 }
 
-const spreadsheetId = '1vFqQwGPFh-5GcTpgnIzw9e10SER4dcE0mvj384JRe90';
-const sheetName = 'Sheet1';
-const apiKey = 'AIzaSyAEMteZt2odUw84JKPI_UVuXqtaP-zrWxc';
+
 
 export class Question {
     constructor(question, answers, correctAnswer, sourceLink) {
@@ -67,6 +65,10 @@ function transformDataToQuestions(data) {
 }
 
 export async function getQuestions() {
+    const spreadsheetId = '1vFqQwGPFh-5GcTpgnIzw9e10SER4dcE0mvj384JRe90';
+    const sheetName = 'Sheet1';
+    const apiKey = GOOGLE_API_KEY;
+
     const cachedData = getDataFromLocalStorage();
     if (cachedData) {
         const questions = JSON.parse(cachedData);
