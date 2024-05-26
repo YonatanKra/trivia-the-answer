@@ -1,4 +1,5 @@
 async function getSheetData(spreadsheetId, sheetName, apiKey) {
+
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
 
     try {
@@ -14,9 +15,7 @@ async function getSheetData(spreadsheetId, sheetName, apiKey) {
     }
 }
 
-const spreadsheetId = '1vFqQwGPFh-5GcTpgnIzw9e10SER4dcE0mvj384JRe90';
-const sheetName = 'Sheet1';
-const apiKey = 'AIzaSyAEMteZt2odUw84JKPI_UVuXqtaP-zrWxc';
+
 
 export class Question {
     constructor(question, answers, correctAnswer, sourceLink) {
@@ -66,6 +65,10 @@ function transformDataToQuestions(data) {
 }
 
 export async function getQuestions() {
+    const spreadsheetId = '1vFqQwGPFh-5GcTpgnIzw9e10SER4dcE0mvj384JRe90';
+    const sheetName = 'Sheet1';
+    const apiKey = GOOGLE_API_KEY;
+
     const cachedData = getDataFromLocalStorage();
     if (cachedData) {
         const questions = JSON.parse(cachedData);

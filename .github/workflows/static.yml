@@ -35,6 +35,8 @@ jobs:
       - name: Test
         run: npm test
       - name: build
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_DOCS_API_KEY }}
         run: npm vite build
       - name: Setup Pages
         uses: actions/configure-pages@v5

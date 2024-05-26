@@ -27,7 +27,7 @@ describe('getQuestions', () => {
     it('should fetch questions from spreadsheet', async () => {
         const spreadsheetId = '1vFqQwGPFh-5GcTpgnIzw9e10SER4dcE0mvj384JRe90';
         const sheetName = 'Sheet1';
-        const apiKey = 'AIzaSyAEMteZt2odUw84JKPI_UVuXqtaP-zrWxc';
+        const apiKey = global.GOOGLE_API_KEY = 'some_key';
         
         const getQuestionsResponse = {
             values: [

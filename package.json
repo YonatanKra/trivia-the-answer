@@ -4,7 +4,9 @@
   "description": "A Trivia App",
   "main": "index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "dev": "GOOGLE_API_KEY=$GOOGLE_API_KEY vite",
+    "build": "GOOGLE_API_KEY=$GOOGLE_API_KEY vite build"
   },
   "repository": {
     "type": "git",
